@@ -202,6 +202,16 @@ class User extends Authenticatable implements JWTSubject
         return number_format($value, 2, ',', '.');
     }
 
+    public function getZipcodeAttribute($value)
+    {
+        return substr($value, 0 ,5 ). '-' ($value, 5, 3);
+    }
+
+    public function contractsAsAcquirer()
+    {
+        return $this->hasMany(Contract::class, 'acquirer', 'id');
+    }
+
     public function setAdminAttribute($value)
     {
         $this->attributes['admin'] = ($value === true || $value === 'on' ? 1 : 0);

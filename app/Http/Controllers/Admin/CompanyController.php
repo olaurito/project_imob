@@ -51,8 +51,11 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         $createCompany = Company::create($request->all());
-
         /* var_dump($createCompany); */
+
+        return redirect()->route('admin.companies.edit', [
+            'company' => $createCompany->id
+        ])->with(['color' => 'green', 'message' => 'Empresa cadastrada com sucesso!']);
     }
 
     /**
