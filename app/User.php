@@ -212,6 +212,45 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Contract::class, 'acquirer', 'id');
     }
 
+    public function getCivilStatusTranslateAttribute(string $status, string $genre)
+    {
+        if($genre === 'female'){
+            if($status === 'married'){
+                return 'casada';
+                }elseif($status === 'separated'){
+                    return 'separada';
+
+                }elseif($status === 'single'){
+                    return 'solteira';
+
+                }elseif($status === 'divorced'){
+                    return 'divorciada';
+                }
+                elseif($status === 'widower'){
+                    return 'viúva';
+                }else{
+                    return '';
+                }
+        }else{
+            if($status === 'married'){
+                return 'casado';
+                }elseif($status === 'separated'){
+                    return 'separado';
+
+                }elseif($status === 'single'){
+                    return 'solteira';
+
+                }elseif($status === 'divorced'){
+                    return 'divorciado';
+                }
+                elseif($status === 'widower'){
+                    return 'viúvo';
+                }else{
+                    return '';
+                }
+        }
+    }
+
     public function setAdminAttribute($value)
     {
         $this->attributes['admin'] = ($value === true || $value === 'on' ? 1 : 0);

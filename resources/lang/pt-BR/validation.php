@@ -193,6 +193,7 @@ return [
         'income' => 'renda',
         'company_work' => 'empresa',
         'civil_status' => 'estado civil',
+        'cover' => 'foto',
 
         // Address
         'zipcode' => 'CEP',

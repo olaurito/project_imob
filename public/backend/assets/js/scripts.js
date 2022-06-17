@@ -202,21 +202,29 @@ $(function () {
     });
 
     // ENABLE INPUT TO PRICE
-    $('input[type="checkbox"][name="sale"]').change(function(){
+  /*   $('input[type="checkbox"][name="sale"]').change(function(){
         if($(this).get(0).checked) {
             $('input[name="sale_price"]').attr('disabled', false);
         } else {
             $('input[name="sale_price"]').attr('disabled', true);
         }
     });
+ */
 
-    // ENABLE INPUT TO PRICE
-    $('input[type="checkbox"][name="rent"]').change(function(){
-        if($(this).get(0).checked) {
+    $('input[type="radio"][name="purpose"]').change(function(){
+
+        if($(this).val == 'sale'){
+            $('input[name="sale_price"]').attr('disabled', false);
+        }else{
+            $('input[name="sale_price"]').attr('disabled', true);
+        }
+
+        if($(this).val == 'rent'){
             $('input[name="rent_price"]').attr('disabled', false);
-        } else {
+        }else{
             $('input[name="rent_price"]').attr('disabled', true);
         }
+
     });
 
 });

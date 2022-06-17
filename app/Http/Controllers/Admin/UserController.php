@@ -108,6 +108,8 @@ class UserController extends Controller
         /* var_dump($request->all()); */
         $user->setLessorAttribute($request->lessor);
         $user->setLesseeAttribute($request->lessee);
+        $user->setAdminAttribute($request->admin);
+        $user->setClientAttribute($request->client);
 
         if(!empty($request->file('cover'))){
             Storage::delete($user->cover);

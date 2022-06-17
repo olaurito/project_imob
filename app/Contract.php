@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contract extends Model
 {
     protected $fillable = [
-        'sale',
-        'rent',
+        'purpose',
         'owner',
         'owner_spouse',
         'owner_company',
@@ -116,19 +115,16 @@ class Contract extends Model
         return number_format($value, 2, ',', '.');
     }
 
-    public function setSalePriceAttribute($value)
+    public function setPurposeAttribute($value)
     {
-        if(!empty($value)){
-            $this->attributes['price'] = floatval($this->convertStringToDouble($value));
+        if($value == 'sale'){
+            $this->attributes['purpose'] = 'sale';
+        }else{
+            $this->attributes['purpose'] = 'rent';
         }
+
     }
 
-    public function setRentPriceAttribute($value)
-    {
-        if(!empty($value)){
-            $this->attributes['price'] = floatval($this->convertStringToDouble($value));
-        }
-    }
 
     public function getTributeAttribute($value)
     {
@@ -190,7 +186,7 @@ class Contract extends Model
     public function terms()
     {
         // Finalidade [Venda/Locação]
-        if ($this->sale == true) {
+        if ($this->purpose == 'sale') {
             $parameters = [
                 'purpouse' => 'VENDA',
                 'part' => 'VENDEDOR',
@@ -198,7 +194,7 @@ class Contract extends Model
             ];
         }
 
-        if ($this->rent == true) {
+        if ($this->purpose == 'rent') {
             $parameters = [
                 'purpouse' => 'LOCAÇÃO',
                 'part' => 'LOCADOR',
@@ -219,9 +215,9 @@ class Contract extends Model
         } else { // Se não tem empresa
 
             if (!empty($this->owner_spouse)) { // E tem conjuge
-                $terms[] = "<p><b>1. {$parameters['part']}: {$this->ownerObject->name}</b>, natural de {$this->ownerObject->place_of_birth}, {$this->ownerObject->civil_status}, {$this->ownerObject->occupation}, portador da cédula de identidade R. G. nº {$this->ownerObject->document_secondary} {$this->ownerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->ownerObject->document}, e cônjuge {$this->ownerObject->spouse_name}, natural de {$this->ownerObject->spouse_place_of_birth}, {$this->ownerObject->spouse_occupation}, portador da cédula de identidade R. G. nº {$this->ownerObject->spouse_document_secondary} {$this->ownerObject->spouse_document_secondary_complement}, e inscrição no C. P. F. nº {$this->ownerObject->spouse_document}, residentes e domiciliados à {$this->ownerObject->street}, nº {$this->ownerObject->number}, {$this->ownerObject->complement}, {$this->ownerObject->neighborhood}, {$this->ownerObject->city}/{$this->ownerObject->state}, CEP {$this->ownerObject->zipcode}.</p>";
+                $terms[] = "<p><b>1. {$parameters['part']}: {$this->ownerObject->name}</b>, natural de {$this->ownerObject->place_of_birth}, {$this->ownerObject->getCivilStatusTranslateAttribute($this->ownerObject->civil_status ,$this->ownerObject->genre) }, {$this->ownerObject->occupation}, portador da cédula de identidade R. G. nº {$this->ownerObject->document_secondary} {$this->ownerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->ownerObject->document}, e cônjuge {$this->ownerObject->spouse_name}, natural de {$this->ownerObject->spouse_place_of_birth}, {$this->ownerObject->spouse_occupation}, portador da cédula de identidade R. G. nº {$this->ownerObject->spouse_document_secondary} {$this->ownerObject->spouse_document_secondary_complement}, e inscrição no C. P. F. nº {$this->ownerObject->spouse_document}, residentes e domiciliados à {$this->ownerObject->street}, nº {$this->ownerObject->number}, {$this->ownerObject->complement}, {$this->ownerObject->neighborhood}, {$this->ownerObject->city}/{$this->ownerObject->state}, CEP {$this->ownerObject->zipcode}.</p>";
             } else { // E não tem conjuge
-                $terms[] = "<p><b>1. {$parameters['part']}: {$this->ownerObject->name}</b>, natural de {$this->ownerObject->place_of_birth}, {$this->ownerObject->civil_status}, {$this->ownerObject->occupation}, portador da cédula de identidade R. G. nº {$this->ownerObject->document_secondary} {$this->ownerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->ownerObject->document}, residente e domiciliado à {$this->ownerObject->street}, nº {$this->ownerObject->number}, {$this->ownerObject->complement}, {$this->ownerObject->neighborhood}, {$this->ownerObject->city}/{$this->ownerObject->state}, CEP {$this->ownerObject->zipcode}.</p>";
+                $terms[] = "<p><b>1. {$parameters['part']}: {$this->ownerObject->name}</b>, natural de {$this->ownerObject->place_of_birth},{$this->ownerObject->getCivilStatusTranslateAttribute($this->ownerObject->civil_status ,$this->ownerObject->genre) }, {$this->ownerObject->occupation}, portador da cédula de identidade R. G. nº {$this->ownerObject->document_secondary} {$this->ownerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->ownerObject->document}, residente e domiciliado à {$this->ownerObject->street}, nº {$this->ownerObject->number}, {$this->ownerObject->complement}, {$this->ownerObject->neighborhood}, {$this->ownerObject->city}/{$this->ownerObject->state}, CEP {$this->ownerObject->zipcode}.</p>";
             }
         }
 
@@ -237,9 +233,9 @@ class Contract extends Model
         } else { // Se não tem empresa
 
             if (!empty($this->acquirer_spouse)) { // E tem conjuge
-                $terms[] = "<p><b>2. {$parameters['part_opposite']}: {$this->acquirerObject->name}</b>, natural de {$this->acquirerObject->place_of_birth}, {$this->acquirerObject->civil_status}, {$this->acquirerObject->occupation}, portador da cédula de identidade R. G. nº {$this->acquirerObject->document_secondary} {$this->acquirerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->acquirerObject->document}, e cônjuge {$this->acquirerObject->spouse_name}, natural de {$this->acquirerObject->spouse_place_of_birth}, {$this->acquirerObject->spouse_occupation}, portador da cédula de identidade R. G. nº {$this->acquirerObject->spouse_document_secondary} {$this->acquirerObject->spouse_document_secondary_complement}, e inscrição no C. P. F. nº {$this->acquirerObject->spouse_document}, residentes e domiciliados à {$this->acquirerObject->street}, nº {$this->acquirerObject->number}, {$this->acquirerObject->complement}, {$this->acquirerObject->neighborhood}, {$this->acquirerObject->city}/{$this->acquirerObject->state}, CEP {$this->acquirerObject->zipcode}.</p>";
+                $terms[] = "<p><b>2. {$parameters['part_opposite']}: {$this->acquirerObject->name}</b>, natural de {$this->acquirerObject->place_of_birth}, { $this->acquirerObject->getCivilStatusTranslateAttribute($this->acquirerObject->civil_status ,$this->acquirerObject->genre) }, {$this->acquirerObject->occupation}, portador da cédula de identidade R. G. nº {$this->acquirerObject->document_secondary} {$this->acquirerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->acquirerObject->document}, e cônjuge {$this->acquirerObject->spouse_name}, natural de {$this->acquirerObject->spouse_place_of_birth}, {$this->acquirerObject->spouse_occupation}, portador da cédula de identidade R. G. nº {$this->acquirerObject->spouse_document_secondary} {$this->acquirerObject->spouse_document_secondary_complement}, e inscrição no C. P. F. nº {$this->acquirerObject->spouse_document}, residentes e domiciliados à {$this->acquirerObject->street}, nº {$this->acquirerObject->number}, {$this->acquirerObject->complement}, {$this->acquirerObject->neighborhood}, {$this->acquirerObject->city}/{$this->acquirerObject->state}, CEP {$this->acquirerObject->zipcode}.</p>";
             } else { // E não tem conjuge
-                $terms[] = "<p><b>2. {$parameters['part_opposite']}: {$this->acquirerObject->name}</b>, natural de {$this->acquirerObject->place_of_birth}, {$this->acquirerObject->civil_status}, {$this->acquirerObject->occupation}, portador da cédula de identidade R. G. nº {$this->acquirerObject->document_secondary} {$this->acquirerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->acquirerObject->document}, residente e domiciliado à {$this->acquirerObject->street}, nº {$this->acquirerObject->number}, {$this->acquirerObject->complement}, {$this->acquirerObject->neighborhood}, {$this->acquirerObject->city}/{$this->acquirerObject->state}, CEP {$this->acquirerObject->zipcode}.</p>";
+                $terms[] = "<p><b>2. {$parameters['part_opposite']}: {$this->acquirerObject->name}</b>, natural de {$this->acquirerObject->place_of_birth}, { $this->acquirerObject->getCivilStatusTranslateAttribute($this->acquirerObject->civil_status ,$this->acquirerObject->genre) }, {$this->acquirerObject->occupation}, portador da cédula de identidade R. G. nº {$this->acquirerObject->document_secondary} {$this->acquirerObject->document_secondary_complement}, e inscrição no C. P. F. nº {$this->acquirerObject->document}, residente e domiciliado à {$this->acquirerObject->street}, nº {$this->acquirerObject->number}, {$this->acquirerObject->complement}, {$this->acquirerObject->neighborhood}, {$this->acquirerObject->city}/{$this->acquirerObject->state}, CEP {$this->acquirerObject->zipcode}.</p>";
             }
         }
 

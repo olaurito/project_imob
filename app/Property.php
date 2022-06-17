@@ -177,6 +177,17 @@ class Property extends Model
         return number_format($value, 2, ',', '.');
     }
 
+    public function setZipcodeAttribute($value)
+    {
+        $this->attributes['zipcode'] = $this->clearField($value);
+    }
+
+    public function getZipcodeAttribute($value)
+    {
+        return substr($value, 0 ,5 ). '-' ($value, 5, 3);
+    }
+
+
     /**
      * Mutator Air Conditioning
      *
@@ -186,6 +197,7 @@ class Property extends Model
     {
         $this->attributes['air_conditioning'] = (($value === true || $value === 'on') ? 1 : 0);
     }
+
 
     /**
      * Mutator Bar
@@ -352,4 +364,14 @@ class Property extends Model
 
         return str_replace(',', '.', str_replace('.', '', $param));
     }
+
+    private function clearField(?string $param)
+    {
+        if(empty($param)){
+            return '';
+        }
+
+        return str_replace(['.', '-', '/', '(', ')', ' '], '', $param);
+    }
+    
 }

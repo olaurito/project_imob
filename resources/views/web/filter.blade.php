@@ -113,13 +113,13 @@
                                     <article class="card main_properties_item">
                                         <div class="img-responsive-16by9">
                                             <a
-                                                href="{{ route(session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false)  ? 'web.buyProperty' : 'web.rentProperty', ['property' => $property->slug]) }}">
+                                                href="{{ route(session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false)  ? 'web.buyProperty' : 'web.rentProperty', ['slug' => $property->slug]) }}">
 
                                                 <img src="{{ $property->cover() }}" class="card-img-top" alt="">
                                             </a>
                                         </div>
                                         <div class="card-body">
-                                            <h2><a href="{{ route(session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false)  ? 'web.buyProperty' : 'web.rentProperty', ['property' => $property->slug]) }}"
+                                            <h2><a href="{{ route(session('sale') == true || (!empty($type) && $type == 'sale') || ($property->rent == false)  ? 'web.buyProperty' : 'web.rentProperty', ['slug' => $property->slug]) }}"
                                                     class="text-front">{{ $property->title }}</a>
                                             </h2>
                                             <p class="main_properties_item_category">{{ $property->category }}</p>
@@ -151,7 +151,7 @@
                                             @endif;
 
 
-                                            <a href="{{ route(session('sale') == true  || (!empty($type) && $type == 'sale') || ($property->rent == false)  ? 'web.buyProperty' : 'web.rentProperty', ['property' => $property->slug]) }}"
+                                            <a href="{{ route(session('sale') == true  || (!empty($type) && $type == 'sale') || ($property->rent == false)  ? 'web.buyProperty' : 'web.rentProperty', ['slug' => $property->slug]) }}"
                                                 class="btn btn-front btn-block">Ver Imóvel</a>
                                         </div>
                                         <div class="card-footer d-flex">

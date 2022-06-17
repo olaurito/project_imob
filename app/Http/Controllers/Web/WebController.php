@@ -92,7 +92,7 @@ class WebController extends Controller
         $head = $this->seo->render(
             env('APP_NAME') . ' - Upinside Treinamentos',
             $property->headline ?? $property->title,
-            route('web.rentProperty', ['property' => $property->slug]),
+            route('web.rentProperty', ['slug' => $property->slug]),
             $property->cover());
 
         return view('web.property', [

@@ -315,6 +315,7 @@ class FilterController extends Controller
 
 
         return DB::table('properties')
+        ->where('status', '=', '1')
         ->when($sale, function($query, $sale){
             return $query->where('sale', $sale);
         })
@@ -356,7 +357,7 @@ class FilterController extends Controller
                 return $query;
             }
             $garage = (int)  $garage;
-            return $query->whereRaw('garage + garage_covered = ? OR garage = ? OR garage_covered = ?', [$garage, $garage, $garage]);
+            return $query->whereRaw('(garage + garage_covered = ? OR garage = ? OR garage_covered = ?)', [$garage, $garage, $garage]);
         })
         ->when($priceBase, function($query, $priceBase){
 
