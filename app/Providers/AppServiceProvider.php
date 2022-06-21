@@ -28,6 +28,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         //emitir uma mensagem de alerta, maneira pra chamar um helper
-        Blade::component('admin.components.message', 'message');
+        Blade::aliasComponent('admin.components.message', 'message');
     }
 }

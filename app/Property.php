@@ -184,7 +184,7 @@ class Property extends Model
 
     public function getZipcodeAttribute($value)
     {
-        return substr($value, 0 ,5 ). '-' ($value, 5, 3);
+        return substr($value, 0 ,5 ). '-' .substr($value, 5, 3);
     }
 
 
@@ -373,5 +373,5 @@ class Property extends Model
 
         return str_replace(['.', '-', '/', '(', ')', ' '], '', $param);
     }
-    
+
 }
